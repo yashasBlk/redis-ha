@@ -24,6 +24,8 @@ set -e
 log_info 'Processing Redis configuration files ...'
 if [[ -v REDIS_PASSWORD ]]; then
   envsubst < ${CONTAINER_SCRIPTS_PATH}/password.conf.template >> /etc/redis.conf
+  
+  echo masterauth ${REDIS_PASSWORD} >> redis-ha-build
 else
   log_info 'WARNING: setting REDIS_PASSWORD is recommended'
 fi
@@ -105,6 +107,8 @@ function launchsentinel() {
   echo "sentinel failover-timeout mymaster ${REDIS_FAILOVER_TIMEOUT:-180000}" >> ${sentinel_conf}
   echo "sentinel parallel-syncs mymaster 1" >> ${sentinel_conf}
   echo "bind 0.0.0.0" >> ${sentinel_conf}
+  
+  echo "sentinel auth-pass ${master} Redispassword@123" >> ${sentinel_conf}
 
   ${REDIS_PREFIX}/bin/redis-sentinel ${sentinel_conf} --protected-mode no
 }
