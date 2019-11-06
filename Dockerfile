@@ -8,7 +8,7 @@ USER root
 
 RUN yum install hostname -y
 
-
+RUN chmod 777 /etc/redis.conf
 
 USER 1001
 
