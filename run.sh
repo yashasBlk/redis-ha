@@ -108,7 +108,7 @@ function launchsentinel() {
   echo "sentinel parallel-syncs mymaster 1" >> ${sentinel_conf}
   echo "bind 0.0.0.0" >> ${sentinel_conf}
   
-  echo "sentinel auth-pass ${master} ${REDIS_PASSWORD}" >> ${sentinel_conf}
+  
 
   ${REDIS_PREFIX}/bin/redis-sentinel ${sentinel_conf} --protected-mode no
 }
