@@ -100,7 +100,7 @@ function launchsentinel() {
     sleep 10
   done
 
-  sentinel_conf=${HOME}/sentinel.conf
+  sentinel_conf=/var/opt/rh/rh-redis32/lib/redis/sentinel.conf
 
   echo "sentinel monitor mymaster ${master} 6379 2" > ${sentinel_conf}
   echo "sentinel down-after-milliseconds mymaster ${REDIS_DOWN_AFTER_MILLIS:-30000}" >> ${sentinel_conf}
