@@ -108,7 +108,7 @@ function launchsentinel() {
   echo "sentinel parallel-syncs mymaster 1" >> ${sentinel_conf}
   echo "bind 0.0.0.0" >> ${sentinel_conf}
   
-  echo "sentinel auth-pass mymaster Redispassword@123" >> ${sentinel_conf}
+  echo "sentinel auth-pass mymaster ${REDIS_PASSWORD}" >> ${sentinel_conf}
 
   ${REDIS_PREFIX}/bin/redis-sentinel ${sentinel_conf} --protected-mode no
 }
@@ -133,10 +133,10 @@ function launchslave() {
     sleep 10
   done
   mkdir -p ${REDIS_DATADIR}/${REDIS_POD_NAME:-noname}
-  sed -i "s/%master-ip%/${master}/" ${HOME}/redis-slave/redis.conf
-  sed -i "s/%master-port%/6379/" ${HOME}/redis-slave/redis.conf
-  sed -i "s/%slave-data%/${REDIS_POD_NAME:-slave}/" ${HOME}/redis-slave/redis.conf
-  ${REDIS_PREFIX}/bin/redis-server ${HOME}/redis-slave/redis.conf
+  sed -i "s/%master-ip%/${master}/" /etc/redis.conf
+  sed -i "s/%master-port%/6379/" /etc/redis.conf
+  sed -i "s/%slave-data%/${REDIS_POD_NAME:-slave}/" /etc/redis.conf
+  ${REDIS_PREFIX}/bin/redis-server /etc/redis.conf
 }
 
 if [[ "${MASTER:-false}" == "true" ]]; then
