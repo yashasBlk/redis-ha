@@ -100,7 +100,7 @@ function launchsentinel() {
     sleep 10
   done
 
-  sentinel_conf=/var/opt/rh/rh-redis32/lib/redis/sentinel.conf
+  sentinel_conf=${HOME}/sentinel.conf
 
   echo "sentinel monitor mymaster ${master} 6379 2" > ${sentinel_conf}
   echo "sentinel down-after-milliseconds mymaster ${REDIS_DOWN_AFTER_MILLIS:-30000}" >> ${sentinel_conf}
@@ -108,7 +108,7 @@ function launchsentinel() {
   echo "sentinel parallel-syncs mymaster 1" >> ${sentinel_conf}
   echo "bind 0.0.0.0" >> ${sentinel_conf}
   
-  echo "sentinel auth-pass ${master} ${REDIS_PASSWORD}" >> ${sentinel_conf}
+  
 
   ${REDIS_PREFIX}/bin/redis-sentinel ${sentinel_conf} --protected-mode no
 }
