@@ -4,9 +4,9 @@ COPY run.sh ${REDIS_PREFIX}/bin/run.sh
 USER root
 
 RUN yum install hostname -y
-USER 1001
+
 RUN mkdir -p /etc/redis && sudo chown -R 1001:1001 /etc/redis 
 
-
+USER 1001
 
 CMD [ "run.sh" ]
