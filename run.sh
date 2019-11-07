@@ -24,7 +24,7 @@ set -e
 log_info 'Processing Redis configuration files ...'
 if [[ -v REDIS_PASSWORD ]]; then
   envsubst < ${CONTAINER_SCRIPTS_PATH}/password.conf.template >> /etc/redis.conf
-  
+
   echo masterauth ${REDIS_PASSWORD} >> /etc/redis.conf
 else
   log_info 'WARNING: setting REDIS_PASSWORD is recommended'
@@ -82,7 +82,7 @@ function launchmaster() {
 
 function launchsentinel() {
   echo "Using Redis Sentinel Host ${REDIS_SENTINEL_SERVICE_HOST}"
-  
+
   while true; do
     master=$(timeout 5 ${REDIS_PREFIX}/bin/redis-cli -h ${REDIS_SENTINEL_SERVICE_HOST} -p ${REDIS_SENTINEL_SERVICE_PORT} --csv SENTINEL get-master-addr-by-name mymaster | tr ',' ' ' | cut -d' ' -f1)
     if [[ -n ${master} ]]; then
@@ -107,15 +107,15 @@ function launchsentinel() {
   echo "sentinel failover-timeout mymaster ${REDIS_FAILOVER_TIMEOUT:-180000}" >> ${sentinel_conf}
   echo "sentinel parallel-syncs mymaster 1" >> ${sentinel_conf}
   echo "bind 0.0.0.0" >> ${sentinel_conf}
-  
-  
+
+
 
   ${REDIS_PREFIX}/bin/redis-sentinel ${sentinel_conf} --protected-mode no
 }
 
 function launchslave() {
   echo "Using Redis Sentinel Host ${REDIS_SENTINEL_SERVICE_HOST}"
-  
+
   while true; do
     master=$(timeout 5 ${REDIS_PREFIX}/bin/redis-cli -h ${REDIS_SENTINEL_SERVICE_HOST} -p ${REDIS_SENTINEL_SERVICE_PORT} --csv SENTINEL get-master-addr-by-name mymaster | tr ',' ' ' | cut -d' ' -f1)
     if [[ -n ${master} ]]; then
@@ -138,11 +138,13 @@ function launchslave() {
   sed -i "s/%slave-data%/${REDIS_POD_NAME:-slave}/" /etc/redis.conf
   ${REDIS_PREFIX}/bin/redis-server /etc/redis.conf
 }
+
 if [[ "${MASTER:-false}" == "true" ]]; then
   launchmaster
   housekeeping
   exit 0
 fi
+
 if [[ "${SENTINEL:-false}" == "true" ]]; then
   launchsentinel
   exit 0
@@ -150,3 +152,8 @@ fi
 
 launchslave
 housekeeping
+
+
+
+
+
