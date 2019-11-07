@@ -5,7 +5,7 @@ USER root
 
 RUN yum install hostname -y
 
-RUN mkdir -p /etc/redis && chown -R 1001:1001 /etc/redis 
+RUN mkdir -p /etc/redis && chown -R 1001:1001 /etc/redis && chmod -R 777 /etc/redis/
 
 USER 1001
 
