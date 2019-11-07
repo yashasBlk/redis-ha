@@ -132,14 +132,13 @@ function launchslave() {
     echo "Connecting to master failed.  Waiting..."
     sleep 10
   done
-  
+  mkdir -p ${REDIS_DATADIR}/${REDIS_POD_NAME:-noname}
+  sed -i "s/%master-ip%/${master}/" ${HOME}/redis-slave/redis.conf
+  sed -i "s/%master-port%/6379/" ${HOME}/redis-slave/redis.conf
+  sed -i "s/%slave-data%/${REDIS_POD_NAME:-slave}/" ${HOME}/redis-slave/redis.conf
+  ${REDIS_PREFIX}/bin/redis-server ${HOME}/redis-slave/redis.conf
 
   
-  mkdir -p ${REDIS_DATADIR}/${REDIS_POD_NAME:-noname}
-  sed -i "s/%master-ip%/${master}/" /etc/redis/redis.conf
-  sed -i "s/%master-port%/6379/" /etc/redis/redis.conf
-  sed -i "s/%slave-data%/${REDIS_POD_NAME:-slave}/" /etc/redis/redis.conf
-  ${REDIS_PREFIX}/bin/redis-server /etc/redis/redis.conf
 }
 
 if [[ "${MASTER:-false}" == "true" ]]; then
