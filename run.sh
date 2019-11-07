@@ -23,9 +23,9 @@ set -e
 # Process the Redis configuration files
 log_info 'Processing Redis configuration files ...'
 if [[ -v REDIS_PASSWORD ]]; then
-  envsubst < ${CONTAINER_SCRIPTS_PATH}/password.conf.template >> /etc/redis/redis.conf
+  envsubst < ${CONTAINER_SCRIPTS_PATH}/password.conf.template >> /etc/redis.conf
   
-  echo masterauth ${REDIS_PASSWORD} >> /etc/redis/redis.conf
+  echo masterauth ${REDIS_PASSWORD} >> /etc/redis.conf
 else
   log_info 'WARNING: setting REDIS_PASSWORD is recommended'
 fi
@@ -77,7 +77,7 @@ function launchmaster() {
 
   restore
 
-  ${REDIS_PREFIX}/bin/redis-server /etc/redis/redis.conf
+  ${REDIS_PREFIX}/bin/redis-server /etc/redis.conf
 }
 
 function launchsentinel() {
