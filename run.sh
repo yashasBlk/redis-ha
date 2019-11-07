@@ -132,7 +132,8 @@ function launchslave() {
     echo "Connecting to master failed.  Waiting..."
     sleep 10
   done
-  mkdir -p ${REDIS_DATADIR}/${REDIS_POD_NAME:-noname}
+  
+  sudo mkdir -p ${REDIS_DATADIR}/${REDIS_POD_NAME:-noname}
   sed -i "s/%master-ip%/${master}/" /etc/redis/redis.conf
   sed -i "s/%master-port%/6379/" /etc/redis/redis.conf
   sed -i "s/%slave-data%/${REDIS_POD_NAME:-slave}/" /etc/redis/redis.conf
