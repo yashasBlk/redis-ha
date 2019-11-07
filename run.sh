@@ -77,7 +77,7 @@ function launchmaster() {
 
   restore
 
-  ${REDIS_PREFIX}/bin/redis-server /etc/redis/:redis.conf
+  ${REDIS_PREFIX}/bin/redis-server /etc/redis/redis.conf
 }
 
 function launchsentinel() {
