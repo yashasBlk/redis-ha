@@ -133,7 +133,7 @@ function launchslave() {
     sleep 10
   done
   
-  sudo su -
+  chmod -R 777 ${REDIS_DATADIR}/
   mkdir -p ${REDIS_DATADIR}/${REDIS_POD_NAME:-noname}
   sed -i "s/%master-ip%/${master}/" /etc/redis/redis.conf
   sed -i "s/%master-port%/6379/" /etc/redis/redis.conf
